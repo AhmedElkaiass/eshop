@@ -10,9 +10,10 @@ public class LogingBehavior<TRequest, TResponse>
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Handling command: {CommandName} with data: {@Command}",
+        _logger.LogInformation("[START] Handle Request = {CommandName} with data: {@Command} \r\n & Response ={Response}",
                                request.GetType().Name,
-                               request);
+                               request,
+                               typeof(TResponse).Name);
         Stopwatch sw = new();
         sw.Start();
         var result = await next(cancellationToken);

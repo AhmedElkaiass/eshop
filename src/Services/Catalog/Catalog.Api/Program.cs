@@ -1,6 +1,4 @@
-﻿
-
-using BuildingBlocks.Exceptions.Handlers;
+﻿using BuildingBlocks.Exceptions.Handlers;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +13,10 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddCarter(configurator: (cfg) =>
 {
 });
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitalizeData>();
+}
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("DefaultConnection")!);
@@ -28,16 +30,5 @@ app.UseExceptionHandler(options =>
 {
 
 });
-//app.Use((context, task) =>
-//{
-//    Stopwatch stopwatch = new Stopwatch();
-//    stopwatch.Start();
-//    var next = task();
-//    stopwatch.Stop();
-//    var elapsed = stopwatch.ElapsedMilliseconds;
-//    builder.Services.BuildServiceProvider()?.GetRequiredService<ILogger<Program>>()
-//        .LogInformation("Request {method} {path} took {elapsed} ms", context.Request.Method, context.Request.Path, elapsed);
-//    return next;
-//});
 app.MapCarter();
 app.Run();
