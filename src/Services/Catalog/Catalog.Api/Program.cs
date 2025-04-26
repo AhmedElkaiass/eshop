@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Exceptions.Handlers;
+using HealthChecks.UI.Client;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ builder.Services.AddMarten(options =>
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 //builder.Services.AddProblemDetails();
 builder.Services.AddValidatorsFromAssembly(assembly);
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!);
 var app = builder.Build();
 // Add Middlewares (Configure Http Request Live cycle.) , order is important here .....
 app.UseExceptionHandler(options =>
@@ -31,4 +34,8 @@ app.UseExceptionHandler(options =>
 
 });
 app.MapCarter();
-app.Run();
+app.UseHealthChecks("/health", options: new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+await app.RunAsync();

@@ -4,9 +4,9 @@ public class GetProductsEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/products", async (ISender sender, CancellationToken cancellationToken) =>
+        app.MapGet("/products", async ([AsParameters] GetProductsQuery request, ISender sender, CancellationToken cancellationToken) =>
         {
-            var result = await sender.Send(new GetProductsQuery(), cancellationToken);
+            var result = await sender.Send(request, cancellationToken);
             if (result is null || !result.Products.Any())
                 return Results.NotFound();
             return Results.Ok(result);
