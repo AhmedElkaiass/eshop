@@ -1,6 +1,4 @@
-﻿using Carter;
-
-namespace Basket.Api.Basket.StoreBasket;
+﻿namespace Basket.Api.Basket.StoreBasket;
 
 public class StoreBasketEndpoint : ICarterModule
 {
