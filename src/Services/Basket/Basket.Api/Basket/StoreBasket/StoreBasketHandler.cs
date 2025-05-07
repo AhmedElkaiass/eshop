@@ -1,7 +1,4 @@
-﻿using Basket.Api.Models;
-using FluentValidation;
-
-namespace Basket.Api.Basket.StoreBasket;
+﻿namespace Basket.Api.Basket.StoreBasket;
 public record StoreBasketCommand(ShoppingCart Cart) : ICommand<StoreBasketResult>;
 public record StoreBasketResult(string UserName);
 public class StoreBasketCommandValidator : AbstractValidator<StoreBasketCommand>
@@ -15,11 +12,11 @@ public class StoreBasketCommandValidator : AbstractValidator<StoreBasketCommand>
             .WithMessage("should have one item atleast.");
     }
 }
-public class StoreBasketCommandHandler : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+public class StoreBasketCommandHandler(IBasketRepository basketRepository) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
 {
-    public async Task<StoreBasketResult> Handle(StoreBasketCommand request, CancellationToken cancellationToken)
+    public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
-        ShoppingCart cart = request.Cart;
-        return await Task.FromResult(new StoreBasketResult(cart.UserName));
+        var shoppingCart = await basketRepository.StoreBasket(command.Cart, cancellationToken);
+        return await Task.FromResult(new StoreBasketResult(shoppingCart.UserName));
     }
 }

@@ -5,13 +5,9 @@ public class BasketRepository(IDocumentSession _session) : IBasketRepository
 
     public async Task<ShoppingCart?> GetBasket(string userName, CancellationToken cancellationToken = default)
     {
-        // Check if the userName is null or empty
-        if (string.IsNullOrEmpty(userName))
-        {
-            throw new ArgumentException("User name cannot be null or empty.", nameof(userName));
-        }
-        // Retrieve the basket from the database using Marten
-        return await _session.LoadAsync<ShoppingCart>(userName, cancellationToken);
+
+        var basket = await _session.LoadAsync<ShoppingCart>(userName, cancellationToken);
+        return basket is null ? throw new BasketNotFoundException(userName) : basket;
     }
     public async Task<ShoppingCart> StoreBasket(ShoppingCart basket, CancellationToken cancellationToken = default)
     {

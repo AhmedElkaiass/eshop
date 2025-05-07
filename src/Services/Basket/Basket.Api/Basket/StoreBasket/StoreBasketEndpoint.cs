@@ -13,6 +13,6 @@ public class StoreBasketEndpoint : ICarterModule
     private async Task<IResult> MapStoreBasketEndpoint(StoreBasketCommand request, ISender sender, CancellationToken cancellationToken)
     {
         var result = await sender.Send(request, cancellationToken);
-        return Results.Ok(result);
+        return Results.Created($"basket/{result.UserName}", result);
     }
 }
