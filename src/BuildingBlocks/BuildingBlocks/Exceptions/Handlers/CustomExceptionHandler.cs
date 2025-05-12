@@ -19,7 +19,7 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> _logger) : I
             ValidationException => (exception.Message, exception.GetType().Name, StatusCodes.Status400BadRequest),
             NotFoundException => (exception.Message, exception.GetType().Name, StatusCodes.Status404NotFound),
             BadRequestException => (exception.Message, exception.GetType().Name, StatusCodes.Status400BadRequest),
-            _ => ("An error occurred while processing your request.", "Internal Server Error", StatusCodes.Status500InternalServerError)
+            _ => (exception.Message, "Internal Server Error", StatusCodes.Status500InternalServerError)
         };
         var problemDetails = new AppProblemDetails
         {

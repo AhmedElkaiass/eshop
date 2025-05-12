@@ -1,6 +1,7 @@
 
 using System.Reflection;
 using HealthChecks.UI.Client;
+using static Discount.Grpc.Discount;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -36,6 +37,16 @@ builder.Services.AddStackExchangeRedisCache(options =>
 //    var baseRepo = provider.GetService<BasketRepository>();
 //    return new CachedBasketRepository(baseRepo!, provider.GetService<IDistributedCache>()!);
 //});
+builder.Services.AddGrpcClient<DiscountClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration.GetConnectionString("DiscountUrl")!);
+}).ConfigurePrimaryHttpMessageHandler(( ) =>
+    {
+        return new HttpClientHandler()
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!)
     .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
