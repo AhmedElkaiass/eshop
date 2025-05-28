@@ -9,5 +9,5 @@ builder.Services
     .AddApi();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
-app.ConfigureApi();
+await app.UseApiServices();
 await app.RunAsync();

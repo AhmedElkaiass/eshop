@@ -31,7 +31,18 @@ services:
      restart: always
      ports:
        - "6379:6379"
-
+  
+  orderdb:
+     container_name: mssql_container
+     image: mcr.microsoft.com/mssql/server
+     environment:
+       - ACCEPT_EULA=sa
+       - SA_PASSWORD=P@ssw0rd!123
+     restart: unless-stopped
+     ports:
+       - "1433:1433"
+     volumes:
+       - sqlserver_order:/var/opt/mssql
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

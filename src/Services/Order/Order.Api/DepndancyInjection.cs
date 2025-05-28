@@ -1,4 +1,6 @@
-﻿namespace Order.Api;
+﻿using Order.Infrastrucre.Data.Extentions;
+
+namespace Order.Api;
 
 public static class DepndancyInjection
 {
@@ -7,10 +9,10 @@ public static class DepndancyInjection
         // Add your api services here like controllers, filters, etc.
         return services;
     }
-    public static WebApplication ConfigureApi(this WebApplication app)
+    public static async Task<WebApplication> UseApiServices(this WebApplication app)
     {
         // Configure your api middlewares here like exception handling, routing, etc.
-
+        await app.InitDatabaseAsync();
         return app;
     }
 }
