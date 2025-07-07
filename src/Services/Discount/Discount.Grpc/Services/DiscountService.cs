@@ -8,13 +8,13 @@ public class DiscountService(DiscountContext _dbContext,
 {
     public override async Task<CoponModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
     {
-        var copone = await _dbContext.CoponModels.FirstOrDefaultAsync(x => x.ProductName==request.ProductName);
+        var copone = await _dbContext.CoponModels.FirstOrDefaultAsync(x => x.ProductName == request.ProductName);
         if (copone is null)
-            copone=new CoponModel()
+            copone = new CoponModel()
             {
-                Amount=0,
-                Discription="No Discount Avilable.",
-                ProductName="No Product",
+                Amount = 0,
+                Discription = "No Discount Avilable.",
+                ProductName = "No Product",
             };
         _logger.LogInformation("discount is recevid for the product: {productName}", copone.ProductName);
         return copone.Adapt<CoponModel>();
@@ -44,7 +44,7 @@ public class DiscountService(DiscountContext _dbContext,
     }
     public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        var copone = await _dbContext.CoponModels.FirstOrDefaultAsync(x => x.ProductName==request.ProductName);
+        var copone = await _dbContext.CoponModels.FirstOrDefaultAsync(x => x.ProductName == request.ProductName);
         if (copone is null)
             throw new RpcException(new Status(StatusCode.NotFound, "Copon for the product is invalid"));
         _dbContext.CoponModels.Remove(copone);
@@ -52,7 +52,7 @@ public class DiscountService(DiscountContext _dbContext,
         _logger.LogInformation("discount is deleted for the product: {productName}", copone.ProductName);
         return new DeleteDiscountResponse()
         {
-            Success=true,
+            Success = true,
         };
     }
 }

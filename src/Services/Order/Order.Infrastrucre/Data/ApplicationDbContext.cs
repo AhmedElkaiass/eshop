@@ -1,11 +1,5 @@
-﻿namespace Order.Infrastrucre.Data;
-public interface IApplicationDbContext
-{
-    DbSet<Order.Domain.Entities.Order> Orders { get; }
-    DbSet<Product> Products { get; }
-    DbSet<OrderItem> OrderItems { get; }
-    DbSet<Customer> Customers { get; }
-}
+﻿using Order.Application.Data;
+namespace Order.Infrastrucre.Data;
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

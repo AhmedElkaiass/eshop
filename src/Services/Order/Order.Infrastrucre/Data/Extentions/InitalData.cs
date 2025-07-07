@@ -58,9 +58,9 @@ internal class InitalData
                OrderId.Of(Guid.Parse("6B29FC40-CA47-1067-B31D-00DD010662E1")),
                CustomerId.Of(Guid.Parse("6B29FC40-CA47-1067-B31D-00DD010662AA")),
                OrderName.Of("Order 2"),
-               address1,
                address2,
-               payment1);
+               address2,
+               payment2);
             order2.Add(ProductId.Of(Guid.Parse("6B29FC40-CA47-1067-B31D-00DD010662DF")), 2, 400);
             order2.Add(ProductId.Of(Guid.Parse("6B29FC40-CA47-1067-B31D-00DD010662DE")), 1, 300);
             return [order1, order2];
